@@ -1,5 +1,5 @@
 /* Analizador lexico para el lenguaje PL/0 */
-package co.edu.eafit.dis.st0270.p20151.tl.pl0.jflex;
+package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
 
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.KeywordToken;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.IdentifierToken;

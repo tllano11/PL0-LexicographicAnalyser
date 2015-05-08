@@ -14,15 +14,13 @@ public class KeywordToken
                 THEN,
                 WHILE,
                 DO,
-                ODD,
-                MAIN;
+                ODD;
 
                 static public EnumKeyword getKeywordOrdinal(String name) throws Error
                 {
                         if (name.compareTo("const") == 0) return CONST;
                         if (name.compareTo("var") == 0) return VAR;
                         if (name.compareTo("procedure") == 0) return PROCEDURE;
-                        if (name.compareTo("main") == 0) return MAIN;
                         if (name.compareTo("call") == 0) return CALL;
                         if (name.compareTo("begin") == 0) return BEGIN;
                         if (name.compareTo("end") == 0) return END;

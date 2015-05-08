@@ -55,7 +55,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <outputDirectory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/lexer</outputDirectory>
+              <outputDirectory>src/main/java</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -103,6 +103,14 @@
           <filesets>
             <fileset>
               <directory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/lexer/ </directory>
+              <includes>
+                <include>**/*.java</include>
+		<include>**/*.tokens</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+	    <fileset>
+              <directory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/jflex/ </directory>
               <includes>
                 <include>**/*.java</include>
               </includes>
