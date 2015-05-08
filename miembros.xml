@@ -1,0 +1,24 @@
+<grupo>
+  <nombre>docente</nombre>
+  <url>https://svn.riouxsvn.com/st0270tlpl0</url>
+  <miembro>
+    <nombre>Tomas Felipe Llano Rios</nombre>
+    <codigo>201410019010</codigo>
+    <email>tllanos@eafit.edu.co</email>
+  </miembro>
+  <miembro>
+    <nombre> Luis Miguel Mejia Suarez</nombre>
+    <codigo>201410033010</codigo>
+    <email>lmejias3@eafit.edu.co</email>
+  </miembro>
+  <proyecto>
+    <java>
+      <mainclases>
+        <mainclass srcdir="src/main/java" package="co" clase="tlMainAntlrLexer.java">
+        </mainclass>
+        <mainclass srcdir="src/main/java" package="co" clase="tlMainJFlexLexer.java">
+        </mainclass>
+      </mainclases>
+    </java>
+  </proyecto>
+</grupo>
