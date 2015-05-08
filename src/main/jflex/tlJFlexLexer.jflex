@@ -1,12 +1,7 @@
 /* Analizador lexico para el lenguaje PL/0 */
 package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
 
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.KeywordToken;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.IdentifierToken;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.IntegerLiteralToken;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.SeparatorToken;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.OperatorToken;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.Token;
+import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.JFToken;
 
 %%
 %class tlJFlexLexer
@@ -31,14 +26,14 @@ Keyword           = "const" | "var" | "procedure" | "call" | "begin" | "end" | "
 
 
 <YYINITIAL> {
-   {Keyword}                     { return new KeywordToken(yytext(), yyline, yycolumn); }
-   {Identifier}                  { return new IdentifierToken(yytext(), yyline, yycolumn); }
-   {DecIntegerLiteral}           { return new IntegerLiteralToken(yytext(), yyline, yycolumn); }
+   {Keyword}                     { return new JFToken(yytext(), yyline, yycolumn, 3); }
+   {Identifier}                  { return new JFToken(yytext(), yyline, yycolumn, 4); }
+   {DecIntegerLiteral}           { return new JFToken(yytext(), yyline, yycolumn, 5); }
    "(" | ")" | ";" | "," | "."
-                                 { return new SeparatorToken(yytext(), yyline, yycolumn); }
+                                 { return new JFToken(yytext(), yyline, yycolumn, 1); }
    ":=" | "+" | "-" | "*" | "/" | "<" | "<=" | ">" | ">=" | "=" | "<>"
-                                 { return new OperatorToken(yytext(), yyline, yycolumn); }
-   {WhiteSpace}                  { /* Ignore */ }
+                                 { return new JFToken(yytext(), yyline, yycolumn, 2); }
+   {WhiteSpace}                  { return new JFToken(yytext(), yyline, yycolumn, 6); }
 }
 
 .|\n                             { throw new Error("Illegal character <" + yytext() + "> at line: " + (yyline + 1) + " column: " + yycolumn); }
