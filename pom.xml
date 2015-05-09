@@ -5,7 +5,7 @@
 
   <groupId>co.edu.eafit.dis.st0270.p20151.tl.pl0</groupId>
   <artifactId>pl0</artifactId>
-  <version>1.0.0.74</version>
+  <version>1.0.5</version>
   <packaging>jar</packaging>
 
   <name>pl0compiler</name>
@@ -83,6 +83,17 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.6.1</version>
