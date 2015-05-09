@@ -10,39 +10,45 @@ import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.GenericToken;
 public class MaintlAntlrLexer {
     
     public static void main (String args[]) {
-	if (args.length != 1) {
-	    System.err.println("Error: Uso JayAntlrMain File");
-	    System.exit(1);
-	}
+        if (args.length != 1) {
+            System.err.println("Error: Uso JayAntlrMain File");
+            System.exit(1);
+        }
 
-	ANTLRFileStream afs = null;
-        GenericToken t;
-	GenericLexer lexer;
+        ANTLRFileStream afs = null;
+        GenericToken t = null;
+        GenericLexer lexer = null;
 
-	try {
-	    afs = new ANTLRFileStream(args[0]);
-	    lexer = new GenericLexer(new tlAntlrLexer(afs));
-	    t  = lexer.getToken();
-	} catch (IOException ioe) {
-	    System.err.println("Error: " + ioe);
-	    System.exit(1);
-	}
+        try {
+            afs = new ANTLRFileStream(args[0]);
+            lexer = new GenericLexer(new tlAntlrLexer(afs));
+            t  = lexer.getToken();
+        } catch (IOException ioe) {
+            System.err.println("Error: " + ioe);
+            System.exit(1);
+        }
 
 
-	//Token eof = lexer.emitEOF();
+        //Token eof = lexer.emitEOF();
 
-	while(t.getType() != 1) { //eof.getType()) {
-	    switch(t.getType()) {
-	        case tlAntlrLexer.WHITESPACE:
-		    break;
-	        default:
-		    System.out.println("Token " + t.getLex() +
-				       " fila: " + t.getLine() +
-				       " columna: " + t.getCol() +
-				       " tipo: " + t.getType());
-		    break;
-	    }
-	    t = lexer.getToken();
-	}
+        while (t.getType() != 1) { //eof.getType()) {
+            switch (t.getType()) {
+                case tlAntlrLexer.WHITESPACE:
+                    break;
+                default:
+                    System.out.println("Token " + t.getLex() +
+                                       " fila: " + t.getLine() +
+                                       " columna: " + t.getCol() +
+                                       " tipo: " + t.getType());
+                    break;
+            }
+            
+            try {
+                t = lexer.getToken();
+            } catch(IOException ioe) {
+                System.err.println("Error: " + ioe);
+                System.exit(1);
+            }
+        }
     }
 }
