@@ -1,8 +1,8 @@
 package co.edu.eafit.dis.st0270.p20151.tl.pl0.generic;
 
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.GenericLexer;
+import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.ParserException; 
 import java.io.IOException;
-//import ParserException; 
 
 public class Parser {
    
@@ -22,7 +22,7 @@ public class Parser {
         }
     }
     
-    public void analyze(GenericLexer lexer) { //throws ParseException {
+    public void analyze(GenericLexer lexer) throws ParserException {
         this.lexer = lexer;
         reset();
         boolean control = false;
@@ -31,8 +31,7 @@ public class Parser {
 	    while (!control) {
 		switch (state) {
 		    case 0:
-			//throw new ParseException(token);
-                       break;
+			throw new ParserException(token);
                     case 1:
 			token = lexer.getToken();
                         break;
