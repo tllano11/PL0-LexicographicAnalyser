@@ -9,7 +9,7 @@ import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.JFToken;
 %line
 %column
 %function getNextToken
-%type Token
+%type JFToken
 %public
 
 LineTerminator = \r|\n|\r\n
