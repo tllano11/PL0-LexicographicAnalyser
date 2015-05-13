@@ -19,7 +19,7 @@ public class MaintlAntlrLexer {
                         //If is a white space, ignore
                         break;
                     default:
-                        System.out.println("tipo: " + t.getType() +
+                        System.out.println("tipo: " + enumTokens.(t.getType()) +
                                            " valor: " + t.getLex() +
                                            " fila: " + t.getLine() +
                                            " col: " + t.getCol());
