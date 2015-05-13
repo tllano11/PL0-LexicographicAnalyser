@@ -25,19 +25,11 @@ public class GenericLexer {
     
     public GenericToken getToken() throws IOException {
         if (type == 1) return new GenericToken(antlrLexer.nextToken());
-
-        if (type == 2) {
-            try {
-                return new GenericToken(jFlexLexer.getNextToken());
-            } catch (NullPointerException nul) {
-                return new GenericToken(antlrLexer.emitEOF());
-            }
-        }
-        
+        if (type == 2) return new GenericToken(jFlexLexer.getNextToken());       
         return null;
     }
 
-    public GenericToken getEOF() throws IOException {
-        return new GenericToken(antlrLexer.emitEOF());
-    }
+    //public GenericToken getEOF() throws IOException {
+    //    return new GenericToken(antlrLexer.emitEOF());
+    //}
 }

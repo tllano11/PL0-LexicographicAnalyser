@@ -1,7 +1,10 @@
 #!/bin/bash
+clear
 
-MAIN = "MaintlAntlerLexer"
-#MAIN = MaintlJFlexLexer
-FLAG = "../target/classes co.":$MAIN
+#MAIN="MaintlAntlrLexer"
+MAIN=MaintlJFlexLexer
+FLAG="$CLASSPATH:../target/classes co."$MAIN
 
-java -cp $FLAG test01
+echo "Starting tests for"$Main
+
+java -cp $FLAG test01 test02 - test03

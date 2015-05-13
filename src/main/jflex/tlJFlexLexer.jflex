@@ -36,4 +36,8 @@ Keyword           = "const" | "var" | "procedure" | "call" | "begin" | "end" | "
    {WhiteSpace}                  { return new JFToken(yytext(), yyline, yycolumn, 6); }
 }
 
+<<EOF>> {
+   return new JFToken("", yyline, 0, -1);
+}
+
 .|\n                             { throw new Error("Illegal character <" + yytext() + "> at line: " + (yyline + 1) + " column: " + yycolumn); }
