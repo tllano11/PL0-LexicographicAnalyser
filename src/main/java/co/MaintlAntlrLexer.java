@@ -3,17 +3,15 @@ package co;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.Token;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer.tlAntlrLexer;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.GenericLexer;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.Parser;
-import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.ParserException;
+import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.*;
 import java.io.IOException;
 
 public class MaintlAntlrLexer {
 
-    private void list (GenericLexer lexer) {
+    private static void list (GenericLexer lexer) {
         try {
-            Generic Token t = lexer.nextToken();
-            Token eof = lexer.getEOF();
+            GenericToken t = lexer.getToken();
+            GenericToken eof = lexer.getEOF();
 
             while(t.getType() != eof.getType()) {
                 switch (t.getType()) {
@@ -24,15 +22,16 @@ public class MaintlAntlrLexer {
                         System.out.println("tipo: " + t.getType() +
                                            " valor: " + t.getLex() +
                                            " fila: " + t.getLine() +
-                                           " col: " + t.getCol);
+                                           " col: " + t.getCol());
                         break;
                 }
                 
-                t = lexer.nextToken();
+                t = lexer.getToken();
+            }
         } catch (IOException ex) {
                 System.err.println("Error: " + ex.getMessage());       
         }
-    }
+ }
     
     public static void main (String args[]) {
         if (args.length != 1) {
