@@ -22,10 +22,12 @@ public class Parser {
     
     public Parser() {}
     
-    private void reset() {
+    private void reset(GenericLexer lexer) {
         state = 1;
 
-        try {
+        try {	    
+	    //Create new
+	    this.lexer = lexer		
             token = lexer.getToken();
         } catch (IOException ioe) {
             System.err.println("Error: " + ioe);
@@ -34,8 +36,7 @@ public class Parser {
     }
     
     public void analyze (GenericLexer lexer) throws ParserException {
-        this.lexer = lexer;
-        reset();
+        reset(lexer);
         
         try {
             program();
