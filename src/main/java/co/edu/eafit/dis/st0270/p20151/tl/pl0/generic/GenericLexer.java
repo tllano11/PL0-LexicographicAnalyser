@@ -3,6 +3,7 @@ package co.edu.eafit.dis.st0270.p20151.tl.pl0.generic;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer.tlAntlrLexer;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer.tlJFlexLexer;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.GenericToken;
+import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.VerboseListener;
 import java.io.IOException;
 
 public class GenericLexer {
@@ -12,7 +13,9 @@ public class GenericLexer {
     private tlJFlexLexer jFlexLexer;
     
     public GenericLexer (tlAntlrLexer antlrLexer) {
-        this.antlrLexer = antlrLexer;
+	antlrLexer.removeErrorListeners();
+	antlrLexer.addErrorListener(VerboseListener.INSTANCE);
+	this.antlrLexer = antlrLexer;
         this.jFlexLexer = null;
         this.type = 1;
     }

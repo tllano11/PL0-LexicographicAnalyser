@@ -2,6 +2,7 @@
 package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
 
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.JFToken;
+import java.io.IOException;
 
 %%
 %class tlJFlexLexer
@@ -40,4 +41,4 @@ Keyword           = "const" | "var" | "procedure" | "call" | "begin" | "end" | "
    return new JFToken("", yyline, 0, -1);
 }
 
-.|\n                             { throw new Error("Illegal character <" + yytext() + "> at line: " + (yyline + 1) + " column: " + yycolumn); }
+.|\n                             { throw new IOException(); }

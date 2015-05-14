@@ -31,7 +31,6 @@ public class MaintlJFlexLexer {
                 t = lexer.getToken();
             }
         } catch (IOException ex) {
-            System.out.println("LLEGUE");
             throw new TokenException(t);
         }
     }
