@@ -1,7 +1,7 @@
 lexer grammar tlAntlrLexer;
 
 @lexer::header{
-package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
+  package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
 }
 
 @lexer::rulecatch {
