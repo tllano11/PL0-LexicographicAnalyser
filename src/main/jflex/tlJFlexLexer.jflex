@@ -41,4 +41,8 @@ Keyword           = "const" | "var" | "procedure" | "call" | "begin" | "end" | "
    return new JFToken("", yyline, 0, -1);
 }
 
-.|\n                             { throw new IOException(); }
+.                             {java.lang.System.out.println("Error: " + yytext() +
+							    " fila: " + (yyline+1) +
+							    " col: " + (yycolumn+1)); 
+			      	throw new IOException();
+			      }
