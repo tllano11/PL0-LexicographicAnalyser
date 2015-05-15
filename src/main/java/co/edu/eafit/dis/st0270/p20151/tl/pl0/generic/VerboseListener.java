@@ -13,8 +13,8 @@ public class VerboseListener extends BaseErrorListener {
 			    String msg,
 			    RecognitionException e){
 	   
-	System.err.println("Error: " + getUnknownChar(msg));
-	System.err.println("fila: " + line +
+	System.err.println("Error: " + getUnknownChar(msg) +
+		           " fila: " + line +
 			   " col: " + charPositionInLine);
 
 	throw e;

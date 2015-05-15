@@ -14,19 +14,19 @@ public class MaintlJFlexLexer {
             
         while (t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
-            case 6:
-                //If is a white space, ignore
-                break;
-            case 7:
-                throw new TokenException(t);
-            case 8:
-                throw new BadIDException(t);
-            default:
-                System.out.println("tipo: " + types[t.getType()] +
-                                   " valor: " + '"' + t.getLex() + '"' +
-                                   " fila: " + t.getLine() +
-                                   " col: " + t.getCol());
-                break;
+                case 6:
+                    //If is a white space, ignore
+                    break;
+                case 7:
+                    throw new TokenException(t);
+                case 8:
+                    throw new BadIDException(t);
+                default:
+                    System.out.println("tipo: " + types[t.getType()] +
+                                       " valor: " + '"' + t.getLex() + '"' +
+                                       " fila: " + t.getLine() +
+                                       " col: " + t.getCol());
+                    break;
             }
                 
             t = lexer.getToken();
