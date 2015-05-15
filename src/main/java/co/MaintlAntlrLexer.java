@@ -48,40 +48,41 @@ public class MaintlAntlrLexer {
 
         return new ByteArrayInputStream(tmp.getBytes(Charset.forName("UTF-8")));
     }
-    
-    public static void main (String args[]) {
-        if (args.length < 1) {
-            System.out.println("Digite texto a analizar");
-            afs = new ANTLRInputStream(standarInput());
-            System.out.println("fichero: entrada estandar");
-        }
 
+    private static void lexer (String list[]) {
         ANTLRInputStream afs = null;
         GenericLexer lexer = null;
-        //Parser parser = new Parser();
-
-        for (int i = 0; i <  args.length; i++) {
+        
+        for (String arg: list) {
             try {
-                if (!args[i].equals("-")) {
-                    System.out.println("fichero: " + args[i]);
-                    afs = new ANTLRFileStream(args[i]);
+                if (!arg.equals("-")) {
+                    System.out.println("fichero: " + arg);
+                    afs = new ANTLRFileStream(arg);
                 } else {
-                    System.out.println("Digite texto a analizar");
-                    afs = new ANTLRInputStream(standarInput());
+                    System.out.println("Ingrese el texto a analizar");
+                    afs = new ANTLRFileStream(standarInput());
                     System.out.println("fichero: entrada estandar");
                 }
-                
-                lexer = new GenericLexer(new tlAntlrLexer(afs));
+
+                lexer = new GenericLexer(new tlJFlexLexer(afs));
                 list(lexer);
-                System.out.println("-------------------------------\n\r");
-                //parser.analyze(lexer)
-            } catch (IOException ex) {
-                System.err.println("Un expected exceptio: " + ex.getMessage());
+                System.out.println("--------------------------------------- \n\r");
+            } catch (FileNotFoundException ex) {
+                System.err.println("The File: " + args[i] + " was not found");
                 System.exit(1);
             } catch (TokenException | BadIDException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             }
-        } 
+        }
+    }
+    
+    public static void main (String args[]) {
+        if (args.length == 0) {
+            String tmp [] = {"-"};
+            lexer(tmp);
+        } else {
+            lexer(args);
+        }
     }
 }
