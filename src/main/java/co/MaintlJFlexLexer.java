@@ -9,11 +9,25 @@ import java.nio.charset.Charset;
 public class MaintlJFlexLexer {
     private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
 
-    private static void list (GenericLexer lexer) throws TokenException, BadIDException, IOException {
+    private static void printToken(GenericToken t) {
+        System.out.println("tipo: " + types[t.getType()] +
+                           " valor: " + '"' + t.getLex() + '"' +
+                           " fila: " + t.getLine() +
+                           " col: " + t.getCol());
+    }
+
+    private static void list (GenericLexer lexer) throws TokenException, BadIDException, BadINTException, IOException {
         GenericToken t = lexer.getToken();
             
         while (t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
+                case 5:
+                    if (Integer.parseInt(t.getLex()) > (2^31)) {
+                        throw new BadINTException(t);
+                    } else {
+                        printToken(t);
+                    }
+                    break;
                 case 6:
                     //If is a white space, ignore
                     break;
@@ -22,10 +36,7 @@ public class MaintlJFlexLexer {
                 case 8:
                     throw new BadIDException(t);
                 default:
-                    System.out.println("tipo: " + types[t.getType()] +
-                                       " valor: " + '"' + t.getLex() + '"' +
-                                       " fila: " + t.getLine() +
-                                       " col: " + t.getCol());
+                    printToken(t);
                     break;
             }
                 
@@ -71,7 +82,7 @@ public class MaintlJFlexLexer {
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + myFile + " was not found");
                 continue;
-            } catch (TokenException | BadIDException tok) {
+            } catch (TokenException | BadIDException | BadINTException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             } catch (IOException ioex) {

@@ -11,7 +11,14 @@ public class MaintlAntlrLexer {
 
     private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
 
-    private static void list (GenericLexer lexer) throws RecognitionException, BadIDException, IOException {
+    private static void printToken(GenericToken t) {
+        System.out.println("tipo: " + types[t.getType()] +
+                           " valor: " + '"' + t.getLex() + '"' +
+                           " fila: " + t.getLine() +
+                           " col: " + t.getCol());
+    }
+
+    private static void list (GenericLexer lexer) throws RecognitionException, BadIDException, BadINTException, IOException {
         GenericToken t = lexer.getToken();
 
         while(t.getType() != -1) { //-1 = EOF
@@ -19,12 +26,17 @@ public class MaintlAntlrLexer {
                 case 4:
                     if (t.getLex().length() > 32) {
                        throw new BadIDException(t);
+                    } else {
+                        printToken(t);
+                    }
+                case 5:
+                    if(Integer.parseInt(t.getLex()) > (2^31)){
+                        throw new BadINTException(t);
+                    } else {
+                        printToken(t);
                     }
                 default:
-                    System.out.println("tipo: " + types[t.getType()] +
-                                       " valor: " + '"' + t.getLex() + '"' +
-                                       " fila: " + t.getLine() +
-                                       " col: " + t.getCol());
+                    printToken(t);
                     break;
             }
                 
@@ -68,7 +80,7 @@ public class MaintlAntlrLexer {
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + myFile + " was not found");
                 continue;
-            } catch (BadIDException tok) {
+            } catch (BadIDException | BadINTException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             } catch (RecognitionException regex) {
