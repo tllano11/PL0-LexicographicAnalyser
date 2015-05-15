@@ -29,7 +29,7 @@ Keyword           = "const" | "var" | "procedure" | "call" | "begin" | "end" | "
 <YYINITIAL> {
    {Keyword}                     { return new JFToken(yytext(), yyline, yycolumn, 3); }
    {Identifier}                  { if (yylength() <= 32) return new JFToken(yytext(), yyline, yycolumn, 4);
-   				   else return new JFToken(yytext(), yyline, yycolum, 8); }
+   				   else return new JFToken(yytext(), yyline, yycolumn, 8); }
    {DecIntegerLiteral}           { return new JFToken(yytext(), yyline, yycolumn, 5); }
    "(" | ")" | ";" | "," | "."
                                  { return new JFToken(yytext(), yyline, yycolumn, 1); }

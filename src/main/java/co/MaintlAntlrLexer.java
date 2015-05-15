@@ -11,7 +11,7 @@ public class MaintlAntlrLexer {
 
     private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
 
-    private static void list (GenericLexer lexer) throws TokenException {
+    private static void list (GenericLexer lexer) throws TokenException, BadIDException, IOException {
         GenericToken t = lexer.getToken();
 
         while(t.getType() != -1) { //-1 = EOF
@@ -21,10 +21,8 @@ public class MaintlAntlrLexer {
                 break;
             case 7:
                 throw new TokenException(t);
-                break;
             case 8:
                 throw new BadIDException(t);
-                break;
             default:
                 System.out.println("tipo: " + types[t.getType()] +
                                    " valor: " + '"' + t.getLex() + '"' +
@@ -52,27 +50,33 @@ public class MaintlAntlrLexer {
     private static void lexer (String list[]) {
         ANTLRInputStream afs = null;
         GenericLexer lexer = null;
+        String myFile = null;
         
-        for (String arg: list) {
+        for (String arg : list) {
+            myFile = arg;
+            
             try {
                 if (!arg.equals("-")) {
                     System.out.println("fichero: " + arg);
                     afs = new ANTLRFileStream(arg);
                 } else {
                     System.out.println("Ingrese el texto a analizar");
-                    afs = new ANTLRFileStream(standarInput());
+                    afs = new ANTLRInputStream(standarInput());
                     System.out.println("fichero: entrada estandar");
                 }
 
-                lexer = new GenericLexer(new tlJFlexLexer(afs));
+                lexer = new GenericLexer(new tlAntlrLexer(afs));
                 list(lexer);
                 System.out.println("--------------------------------------- \n\r");
             } catch (FileNotFoundException ex) {
-                System.err.println("The File: " + args[i] + " was not found");
-                System.exit(1);
+                System.err.println("The File: " + myFile + " was not found");
+                continue;
             } catch (TokenException | BadIDException tok) {
                 System.err.println(tok.getMessage());
                 continue;
+            } catch (IOException ioex) {
+                System.err.println("Unexpected error: " + ioex.getMessage());
+                System.exit(1);
             }
         }
     }
