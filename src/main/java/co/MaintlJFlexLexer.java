@@ -10,28 +10,28 @@ public class MaintlJFlexLexer {
     private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
 
     private static void list (GenericLexer lexer) throws TokenException {
-        GenericToken t = null;
-
-        try {
-            t = lexer.getToken();
+        GenericToken t = lexer.getToken();
             
-            while (t.getType() != -1) { //-1 = EOF
-                switch (t.getType()) {
-                    case 6:
-                        //If is a white space, ignore
-                        break;
-                    default:
-                        System.out.println("tipo: " + types[t.getType()] +
-                                           " valor: " + '"' + t.getLex() + '"' +
-                                           " fila: " + t.getLine() +
-                                           " col: " + t.getCol());
-                        break;
-                }
-                
-                t = lexer.getToken();
+        while (t.getType() != -1) { //-1 = EOF
+            switch (t.getType()) {
+            case 6:
+                //If is a white space, ignore
+                break;
+            case 7:
+                throw new TokenException(t);
+                break;
+            case 8:
+                throw new BadIDException(t);
+                break;
+            default:
+                System.out.println("tipo: " + types[t.getType()] +
+                                   " valor: " + '"' + t.getLex() + '"' +
+                                   " fila: " + t.getLine() +
+                                   " col: " + t.getCol());
+                break;
             }
-        } catch (IOException ex) {
-            throw new TokenException(t);
+                
+            t = lexer.getToken();
         }
     }
 
@@ -49,14 +49,14 @@ public class MaintlJFlexLexer {
 
     public static void main (String args[]) {
         if (args.length < 1) {
-            System.err.println("Error: Uso MainJFlexLexer Files");
-            System.exit(1);
+            System.out.println("Digite texto a analizar");
+            afs = standarInput();
+            System.out.println("fichero: entrada estandar");
         }
 
         File file = null;
         InputStream afs = null;
         GenericLexer lexer = null;
-        //Parser parser = new Parser();
 
         for (int i = 0; i <  args.length; i++) {
             try {
@@ -73,11 +73,10 @@ public class MaintlJFlexLexer {
                 lexer = new GenericLexer(new tlJFlexLexer(afs));
                 list(lexer);
                 System.out.println("--------------------------------------- \n\r");
-                //parser.analyze(lexer);
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + args[i] + " was not found");
                 System.exit(1);
-            } catch (TokenException tok) {
+            } catch (TokenException | BadIDException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             }
