@@ -22,7 +22,7 @@ public class MaintlJFlexLexer {
         while (t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
                 case 5:
-                    if (Integer.parseInt(t.getLex()) > (2^31)) {
+                    if (Long.parseLong(t.getLex()) > 2147483648L) {
                         throw new BadINTException(t);
                     } else {
                         printToken(t);
