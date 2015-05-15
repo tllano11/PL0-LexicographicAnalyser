@@ -47,22 +47,16 @@ public class MaintlJFlexLexer {
         return new ByteArrayInputStream(tmp.getBytes(Charset.forName("UTF-8")));
     }
 
-    public static void main (String args[]) {
-        if (args.length < 1) {
-            System.out.println("Digite texto a analizar");
-            afs = standarInput();
-            System.out.println("fichero: entrada estandar");
-        }
-
+    private static void lexer (String list[]) {
         File file = null;
         InputStream afs = null;
         GenericLexer lexer = null;
-
-        for (int i = 0; i <  args.length; i++) {
+        
+        for (String arg: list) {
             try {
-                if (!args[i].equals("-")) {
-                    System.out.println("fichero: " + args[i]);
-                    file = new File(args[i]);
+                if (!arg.equals("-")) {
+                    System.out.println("fichero: " + arg);
+                    file = new File(arg);
                     afs = new FileInputStream(file);
                 } else {
                     System.out.println("Ingrese el texto a analizar");
@@ -80,6 +74,15 @@ public class MaintlJFlexLexer {
                 System.err.println(tok.getMessage());
                 continue;
             }
+        }
+    }
+
+    public static void main (String args[]) {
+        if (args.length == 0) {
+            String tmp[] = {"-"};
+            lexer(tmp);
+        } else {
+            lexer(args);
         } 
     }
 }
