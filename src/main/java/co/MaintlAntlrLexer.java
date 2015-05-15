@@ -12,29 +12,29 @@ public class MaintlAntlrLexer {
     private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
 
     private static void list (GenericLexer lexer) throws TokenException {
-        GenericToken t = null;
-        
-        try {
-           t = lexer.getToken();
+        GenericToken t = lexer.getToken();
 
-            while(t.getType() != -1) { //-1 = EOF
-                switch (t.getType()) {
-                    case 6:
-                        //If is a white space, ignore
-                        break;
-                    default:
-                        System.out.println("tipo: " + types[t.getType()] +
-                                           " valor: " + '"' + t.getLex() + '"' +
-                                           " fila: " + t.getLine() +
-                                           " col: " + t.getCol());
-                        break;
-                }
+        while(t.getType() != -1) { //-1 = EOF
+            switch (t.getType()) {
+            case 6:
+                //If is a white space, ignore
+                break;
+            case 7:
+                throw new TokenException(t);
+                break;
+            case 8:
+                throw new BadIDException(t);
+                break;
+            default:
+                System.out.println("tipo: " + types[t.getType()] +
+                                   " valor: " + '"' + t.getLex() + '"' +
+                                   " fila: " + t.getLine() +
+                                   " col: " + t.getCol());
+                break;
+            }
                 
-                t = lexer.getToken();
-            } 
-        } catch (Exception ex) { //AGREGAR LA EXECPCIÓN ESPECIFICA DE ANTLR4
-            throw new TokenException(t);
-        }
+            t = lexer.getToken();
+        } 
     }
 
     private static InputStream standarInput() {
@@ -51,8 +51,9 @@ public class MaintlAntlrLexer {
     
     public static void main (String args[]) {
         if (args.length < 1) {
-            System.err.println("Error: Uso MaintlAntlerLexer Files");
-            System.exit(1);
+            System.out.println("Digite texto a analizar");
+            afs = new ANTLRInputStream(standarInput());
+            System.out.println("fichero: entrada estandar");
         }
 
         ANTLRInputStream afs = null;
@@ -77,7 +78,7 @@ public class MaintlAntlrLexer {
             } catch (IOException ex) {
                 System.err.println("Un expected exceptio: " + ex.getMessage());
                 System.exit(1);
-            } catch (TokenException tok) {
+            } catch (TokenException | BadIDException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             }
