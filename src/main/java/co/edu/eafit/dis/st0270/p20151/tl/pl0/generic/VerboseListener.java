@@ -1,6 +1,7 @@
 package co.edu.eafit.dis.st0270.p20151.tl.pl0.generic;
 
 import org.antlr.v4.runtime.*;
+import java.util.regex.Pattern;
 
 public class VerboseListener extends BaseErrorListener {
 
@@ -11,11 +12,27 @@ public class VerboseListener extends BaseErrorListener {
                             Object offendingSymbol,
                             int line, int charPositionInLine,
                             String msg,
-                            ReconitionException e) {
+                            RecognitionException e){
+        
+        System.err.println("Error: " + getUnknownChar(msg) +
+                           " fila: " + line +
+                           " col: " + charPositionInLine);
+
         throw e;
     }
 
-    public String getUnknownChar(String msg) {
-        return msg.substring(msg.indexOf("'")+1, msg.length()-1);
+    private  String getUnknownChar(String msg) {
+        int ascii;
+        String result = null;
+        String badChar =  msg.substring(msg.indexOf("'")+1, msg.length()-1);
+        
+        if (Pattern.matches("\\p{ASCII}", badChar)) {
+            result = badChar;
+        } else {
+            ascii = (int) badChar.charAt(0);
+            result = String.valueOf(ascii);
+        }
+
+        return result;
     }
 }
