@@ -22,7 +22,7 @@ public class MaintlAntlrLexer {
     }
 
     private static void list (GenericLexer lexer) throws TokenException,
-                                                         IOException {
+                              IOException, RecognitionException {
 
         GenericToken t = lexer.getToken();
 
@@ -100,6 +100,8 @@ public class MaintlAntlrLexer {
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + myFile + " was not found");
                 continue;
+	    } catch (RecognitionException ex) {
+		continue;
             } catch (TokenException tok) {
                 System.err.println(tok.getMessage());
                 continue;
