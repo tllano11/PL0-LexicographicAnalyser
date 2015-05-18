@@ -29,6 +29,7 @@ public class MaintlAntlrLexer {
         while(t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
                 case 4:
+                    //Check if the ID has more than 32 characters
                     if (t.getLex().length() > 32) {
                        throw new TokenException(t);
                     } else {
@@ -36,6 +37,7 @@ public class MaintlAntlrLexer {
                     }
                     break;
                 case 5:
+                    //Make sure the Int is < 2^31
                     if(Long.parseLong(t.getLex()) > 2147483648L){
                         throw new TokenException(t);
                     } else {
