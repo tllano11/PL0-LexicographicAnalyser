@@ -5,6 +5,7 @@ import java.lang.*;
 public class TokenException extends Exception {
     
     public TokenException (GenericToken tok) {
-        super ("Error: " + tok.getLex() + " fila: " + tok.getLine() + " col: " + tok.getCol());
+        super ("Error: " + tok.getLex() + " fila: " + tok.getLine() + " col: "
+               + tok.getCol());
     }
 }

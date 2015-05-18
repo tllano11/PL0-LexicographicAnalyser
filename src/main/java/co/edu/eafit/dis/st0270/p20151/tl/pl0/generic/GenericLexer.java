@@ -13,9 +13,9 @@ public class GenericLexer {
     private tlJFlexLexer jFlexLexer;
     
     public GenericLexer (tlAntlrLexer antlrLexer) {
-	antlrLexer.removeErrorListeners();
-	antlrLexer.addErrorListener(VerboseListener.INSTANCE);
-	this.antlrLexer = antlrLexer;
+        antlrLexer.removeErrorListeners();
+        antlrLexer.addErrorListener(VerboseListener.INSTANCE);
+        this.antlrLexer = antlrLexer;
         this.jFlexLexer = null;
         this.type = 1;
     }
@@ -28,11 +28,7 @@ public class GenericLexer {
     
     public GenericToken getToken() throws IOException {
         if (type == 1) return new GenericToken(antlrLexer.nextToken());
-        if (type == 2) return new GenericToken(jFlexLexer.getNextToken());       
+        if (type == 2) return new GenericToken(jFlexLexer.getNextToken()); 
         return null;
     }
-
-    //public GenericToken getEOF() throws IOException {
-    //    return new GenericToken(antlrLexer.emitEOF());
-    //}
 }

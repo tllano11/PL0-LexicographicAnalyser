@@ -8,19 +8,19 @@ public class VerboseListener extends BaseErrorListener {
     
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer,
-			    Object offendingSymbol,
-			    int line, int charPositionInLine,
-			    String msg,
-			    RecognitionException e){
-	   
-	System.err.println("Error: " + getUnknownChar(msg) +
-		           " fila: " + line +
-			   " col: " + charPositionInLine);
+                            Object offendingSymbol,
+                            int line, int charPositionInLine,
+                            String msg,
+                            RecognitionException e){
+           
+        System.err.println("Error: " + getUnknownChar(msg) +
+                           " fila: " + line +
+                           " col: " + charPositionInLine);
 
-	throw e;
+        throw e;
     }
 
     public String getUnknownChar(String msg) {
-	return msg.substring(msg.indexOf("'")+1, msg.length()-1);
+        return msg.substring(msg.indexOf("'")+1, msg.length()-1);
     }
 }

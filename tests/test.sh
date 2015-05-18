@@ -18,7 +18,7 @@ do
 	    java -cp $FLAGA -
             ;;
         "Run Antlr misc")
-	    java -cp $FLAGA test01 test02 - test03
+	    java -cp $FLAGA test01 - test02 - test03
             ;;
 	"Run Antlr N.A.")
 	    java -cp $FLAGA
@@ -30,7 +30,7 @@ do
 	    java -cp $FLAGJ -
             ;;
         "Run JFlex misc")
-	    java -cp $FLAGJ test01 test02 - test03
+	    java -cp $FLAGJ test01 - test02 - test03
             ;;
 	"Run JFlex N.A.")
 	    java -cp $FLAGJ

@@ -9,7 +9,10 @@ import java.util.Scanner;
 
 public class MaintlAntlrLexer {
 
-    private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
+    private static boolean standarInput = true;
+    private static final String[] types = {"ERROR", "separator", "operator",
+                                           "keyword", "identifier", "integer",
+                                           "withespace"};
 
     private static void printToken(GenericToken t) {
         System.out.println("tipo: " + types[t.getType()] +
@@ -18,25 +21,27 @@ public class MaintlAntlrLexer {
                            " col: " + t.getCol());
     }
 
-    private static void list (GenericLexer lexer) throws RecognitionException, BadIDException, BadINTException, IOException {
+    private static void list (GenericLexer lexer) throws RecognitionException,
+                              TokenException, IOException {
+
         GenericToken t = lexer.getToken();
 
         while(t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
                 case 4:
                     if (t.getLex().length() > 32) {
-                       throw new BadIDException(t);
+                       throw new TokenException(t);
                     } else {
                         printToken(t);
                     }
-		    break;
+                    break;
                 case 5:
                     if(Long.parseLong(t.getLex()) > 2147483648L){
-                        throw new BadINTException(t);
+                        throw new TokenException(t);
                     } else {
                         printToken(t);
                     }
-		    break;
+                    break;
                 default:
                     printToken(t);
                     break;
@@ -71,18 +76,24 @@ public class MaintlAntlrLexer {
                     System.out.println("fichero: " + arg);
                     afs = new ANTLRFileStream(arg);
                 } else {
-                    System.out.println("Ingrese el texto a analizar");
-                    afs = new ANTLRInputStream(standarInput());
-                    System.out.println("fichero: entrada estandar");
+                    if (standarInput) {
+                        System.out.println("Ingrese el texto a analizar");
+                        afs = new ANTLRInputStream(standarInput());
+                        System.out.println("fichero: entrada estandar");
+                        standarInput = false;
+                    } else {
+                        System.out.println("Error, only one standar input" +
+                                           " is accepted per execution");
+                        continue;
+                    }
                 }
 
                 lexer = new GenericLexer(new tlAntlrLexer(afs));
                 list(lexer);
-                System.out.println("--------------------------------------- \n\r");
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + myFile + " was not found");
                 continue;
-            } catch (BadIDException | BadINTException tok) {
+            } catch (TokenException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             } catch (RecognitionException regex) {
