@@ -11,12 +11,7 @@ public class VerboseListener extends BaseErrorListener {
                             Object offendingSymbol,
                             int line, int charPositionInLine,
                             String msg,
-                            RecognitionException e){
-           
-        System.err.println("Error: " + getUnknownChar(msg) +
-                           " fila: " + line +
-                           " col: " + charPositionInLine);
-
+                            ReconitionException e) {
         throw e;
     }
 
