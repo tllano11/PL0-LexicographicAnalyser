@@ -21,8 +21,8 @@ public class MaintlAntlrLexer {
                            " col: " + t.getCol());
     }
 
-    private static void list (GenericLexer lexer) throws RecognitionException,
-                              TokenException, IOException {
+    private static void list (GenericLexer lexer) throws TokenException,
+                                                         IOException {
 
         GenericToken t = lexer.getToken();
 
@@ -67,6 +67,8 @@ public class MaintlAntlrLexer {
 
     private static void lexer (String list[]) {
         ANTLRInputStream afs = null;
+        InputStream is = null;
+        Reader r = null;
         GenericLexer lexer = null;
         String myFile = null;
         
@@ -76,11 +78,14 @@ public class MaintlAntlrLexer {
             try {
                 if (!arg.equals("-")) {
                     System.out.println("fichero: " + arg);
-                    afs = new ANTLRFileStream(arg);
+                    is = new FileInputStream(arg);
+                    r = new InputStreamReader(is, "utf-8");
+                    afs = new ANTLRInputStream(r);
                 } else {
                     if (standarInput) {
                         System.out.println("Ingrese el texto a analizar");
-                        afs = new ANTLRInputStream(standarInput());
+                        r = new InputStreamReader(standarInput(),"utf-8");
+                        afs = new ANTLRInputStream(r);
                         System.out.println("fichero: entrada estandar");
                         standarInput = false;
                     } else {
@@ -97,8 +102,6 @@ public class MaintlAntlrLexer {
                 continue;
             } catch (TokenException tok) {
                 System.err.println(tok.getMessage());
-                continue;
-            } catch (RecognitionException regex) {
                 continue;
             } catch (IOException ioex) {
                 System.err.println("Unexpected error: " + ioex.getMessage());

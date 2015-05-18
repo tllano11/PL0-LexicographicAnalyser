@@ -13,8 +13,9 @@ public class GenericToken {
     private String lex;
     private Token antlrToken; 
     private JFToken jFlexToken;
-    private String rex = "[\\w().,;:=<>\\+\\-\\*\\/]"; //Regular Expresion
-    
+    //private String rex = "[\\w().,;:=<>\\+\\-\\*\\/]"; //Regular Expresion
+    private String rex = "\\p{ASCII}";    
+
     public GenericToken(Token antlrToken) {     
         this.antlrToken = antlrToken;
         this.jFlexToken = null;
