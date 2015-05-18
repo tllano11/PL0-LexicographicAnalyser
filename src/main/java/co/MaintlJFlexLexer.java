@@ -28,6 +28,7 @@ public class MaintlJFlexLexer {
         while (t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
                 case 5:
+                    //Make sure the Int is < 2^31
                     if (Long.parseLong(t.getLex()) > 2147483648L) {
                         throw new TokenException(t);
                     } else {
@@ -38,8 +39,10 @@ public class MaintlJFlexLexer {
                     //If is a white space, ignore
                     break;
                 case 7:
+                    //Character that does not belong to grammar
                     throw new TokenException(t);
                 case 8:
+                    //ID with more than 32 characters
                     throw new TokenException(t);
                 default:
                     printToken(t);

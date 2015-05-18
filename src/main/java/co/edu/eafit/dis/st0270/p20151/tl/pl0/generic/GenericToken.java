@@ -2,6 +2,8 @@ package co.edu.eafit.dis.st0270.p20151.tl.pl0.generic;
 
 import org.antlr.v4.runtime.Token;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.tokens.JFToken;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class GenericToken {
     
@@ -11,8 +13,9 @@ public class GenericToken {
     private String lex;
     private Token antlrToken; 
     private JFToken jFlexToken;
+    private String rex = "[\\w().,;:=<>\\+\\-\\*\\/]"; //Regular Expresion
     
-    public GenericToken(Token antlrToken) {
+    public GenericToken(Token antlrToken) {     
         this.antlrToken = antlrToken;
         this.jFlexToken = null;
         this.type = antlrToken.getType();
@@ -43,6 +46,24 @@ public class GenericToken {
     }
     
     public String getLex() {
-        return lex;
+        Pattern p = Pattern.compile(rex);
+        Matcher m;
+        String printableLex = "";
+        String ch;
+        int ascii;
+        
+        for (char c : lex.toCharArray()) {
+            ch = Character.toString(c);
+            m = p.matcher(ch);
+            
+            if (m.matches()) {
+                printableLex += ch;
+            } else {
+                ascii = (int) c;
+                printableLex += String.valueOf(ascii);
+            }
+        }
+        
+        return printableLex;
     }
 }
