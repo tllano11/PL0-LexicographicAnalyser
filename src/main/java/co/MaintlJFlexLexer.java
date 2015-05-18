@@ -7,7 +7,11 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 public class MaintlJFlexLexer {
-    private static final String[] types = {"ERROR", "SEPARATORS", "OPERATORS", "KEYWORD", "ID", "INT", "WITHESPACE", "EOF"};
+    
+    private static boolean standarInput = true;
+    private static final String[] types = {"ERROR", "separator", "operator",
+                                           "keyword", "identifier", "integer",
+                                           "withespace"};
 
     private static void printToken(GenericToken t) {
         System.out.println("tipo: " + types[t.getType()] +
@@ -16,14 +20,16 @@ public class MaintlJFlexLexer {
                            " col: " + t.getCol());
     }
 
-    private static void list (GenericLexer lexer) throws TokenException, BadIDException, BadINTException, IOException {
+    private static void list (GenericLexer lexer) throws TokenException,
+                                                         IOException {
+
         GenericToken t = lexer.getToken();
             
         while (t.getType() != -1) { //-1 = EOF
             switch (t.getType()) {
                 case 5:
                     if (Long.parseLong(t.getLex()) > 2147483648L) {
-                        throw new BadINTException(t);
+                        throw new TokenException(t);
                     } else {
                         printToken(t);
                     }
@@ -34,7 +40,7 @@ public class MaintlJFlexLexer {
                 case 7:
                     throw new TokenException(t);
                 case 8:
-                    throw new BadIDException(t);
+                    throw new TokenException(t);
                 default:
                     printToken(t);
                     break;
@@ -71,18 +77,24 @@ public class MaintlJFlexLexer {
                     file = new File(arg);
                     afs = new FileInputStream(file);
                 } else {
-                    System.out.println("Ingrese el texto a analizar");
-                    afs = standarInput();
-                    System.out.println("fichero: entrada estandar");
+                    if (standarInput) {
+                        System.out.println("Ingrese el texto a analizar");
+                        afs = standarInput();
+                        System.out.println("fichero: entrada estandar");
+                        standarInput = false;
+                    } else {
+                        System.out.println("Error, only one standar input" +
+                                           " is accepted per execution");
+                        continue;
+                    }
                 }
 
                 lexer = new GenericLexer(new tlJFlexLexer(afs));
                 list(lexer);
-                System.out.println("--------------------------------------- \n\r");
             } catch (FileNotFoundException ex) {
                 System.err.println("The File: " + myFile + " was not found");
                 continue;
-            } catch (TokenException | BadIDException | BadINTException tok) {
+            } catch (TokenException tok) {
                 System.err.println(tok.getMessage());
                 continue;
             } catch (IOException ioex) {

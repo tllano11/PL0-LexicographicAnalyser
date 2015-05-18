@@ -1,0 +1,17 @@
+Grupo de trabajo:
+Tomás Felipe LLano Ríos (201410019010)
+Luis Miguel Mejía Suárez (201410033010)
+
+Este proyecto busca crear un analizador lexicografico
+para el lenguaje pl0, escrito en java 1.8; haciendo
+uso de las bibliotecas de java, Antlr4 y JFlex.
+
+Para el uso del programa se debe llamar a las clases 
+principales "MaintlAntlerLexer" o "MaintlFLexLexer"
+Puesto que ambas reciben las mismas entradas y generan 
+la misma salida.
+Los argumentos pasados al programa son los nombres
+de los archivos a analizar, o un guion "-" para entrar
+al modo entrada estandar.
+Nota: Si el programa es llamado sin argumentos, entra
+al modo de entrada estandar.

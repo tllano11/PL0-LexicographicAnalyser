@@ -15,34 +15,34 @@ public class GenericToken {
     public GenericToken(Token antlrToken) {
         this.antlrToken = antlrToken;
         this.jFlexToken = null;
-	this.type = antlrToken.getType();
+        this.type = antlrToken.getType();
         this.line = antlrToken.getLine();
-	this.col = antlrToken.getCharPositionInLine();
-	this.lex = antlrToken.getText();
+        this.col = antlrToken.getCharPositionInLine();
+        this.lex = antlrToken.getText();
     }
     
     public GenericToken(JFToken jFlexToken) {
         this.antlrToken = null;
         this.jFlexToken = jFlexToken;
         this.type = jFlexToken.getType();
-	this.line = jFlexToken.getLine();
-	this.col = jFlexToken.getColumn();
-	this.lex = jFlexToken.getText();
+        this.line = jFlexToken.getLine();
+        this.col = jFlexToken.getColumn();
+        this.lex = jFlexToken.getText();
     }
         
     public int getType() {
-	return type;
+        return type;
     }
     
     public int getLine() {
-	return line;
+        return line;
     }
     
     public int getCol() {
-	return col;
+        return col;
     }
     
     public String getLex() {
-	return lex;
+        return lex;
     }
 }
