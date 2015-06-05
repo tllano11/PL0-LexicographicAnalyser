@@ -13,6 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <antlr4.visitor>true</antlr4.visitor>
+    <antlr4.listener>true</antlr4.listener>
   </properties>
 
   <dependencies>
@@ -54,7 +56,7 @@
         <version>4.5</version>
         <executions>
           <execution>
-            <id>antlr</id>
+            <id>antlrLexer</id>
             <goals>
               <goal>antlr4</goal>
             </goals>
@@ -79,6 +81,40 @@
                   </includes>
                 </fileset>
               </filesets>
+	      <excludes>
+		<exclude>tlAntlrParser.g4</exclude>
+	      </excludes>
+            </configuration>
+          </execution>
+	  <execution>
+            <id>antlrParser</id>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+            <configuration>
+              <conversionTimeout>10000</conversionTimeout>
+              <debug>false</debug>
+              <dfa>false</dfa>
+              <nfa>false</nfa>
+              <libDirectory>src/main/antlr4/imports</libDirectory>
+              <messageFormat>antlr</messageFormat>
+              <outputDirectory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/parser</outputDirectory>
+              <printGrammar>false</printGrammar>
+              <profile>false</profile>
+              <report>false</report>
+              <sourceDirectory>src/main/antlr4</sourceDirectory>
+              <trace>false</trace>
+              <verbose>true</verbose>
+              <filesets>
+                <fileset>
+                  <includes>
+                    <include>tlAntlrParser.g4</include>
+                  </includes>
+                </fileset>
+              </filesets>
+	      <excludes>
+		 <exclude>tlAntlrLexer.g4</exclude>
+	      </excludes>	      
             </configuration>
           </execution>
         </executions>
@@ -111,6 +147,14 @@
               <directory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/jflex/ </directory>
               <includes>
                 <include>**/*.java</include>
+              </includes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+	    <fileset>
+              <directory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/parser/ </directory>
+              <includes>
+                <include>**/*.java</include>
+		<include>**/*.tokens</include>
               </includes>
               <followSymlinks>false</followSymlinks>
             </fileset>
