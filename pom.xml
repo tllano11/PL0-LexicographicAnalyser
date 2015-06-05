@@ -156,6 +156,10 @@
                 <include>**/*.java</include>
 		<include>**/*.tokens</include>
               </includes>
+	      <excludes>
+		<exclude> tlAntlrParserIDeclVarsVisitor.java  </exclude>
+		<exclude> tlAntlrParserIUsedVarsVisitor.java  </exclude>
+	      </excludes>
               <followSymlinks>false</followSymlinks>
             </fileset>
           </filesets>
