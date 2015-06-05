@@ -13,50 +13,70 @@ grammar tlAntlrParser;
 //options { tokenVocab=tlAntlrLexer; }
 
 program 
-    : block '.'
+    : block '.' #pBlock
     ;
 
 block
-    : defconst? defvar? (defproc)*instruction
+    : defconst? defvar? (defproc)*instruction #bDefconst
     ;
 
 defconst
-    : 'const' ID ':' INT (',' ID ':' INT)* ';'
+    : 'const' ID ':' INT (',' ID ':' INT)* ';' #dcConst
     ;
 
 defvar
-    : 'var' ID (',' ID)* ';'
+    : 'var' ID (',' ID)* ';' #dvVar
     ;
 
 defproc
-    : 'procedure' ID ';' block ';'
+    : 'procedure' ID ';' block ';' #dpProcedure
     ;
 
 instruction
-    : ID ':=' expr
-    | 'call' ID
-    | 'begin' instruction (';' instruction)* ';'? 'end'
-    | 'if' condition 'then' instruction
-    | 'while' condition 'do' instruction
-    |
+    : ID ':=' expr #iID
+    | 'call' ID #iCall
+    | 'begin' instruction (';' instruction)* ';'? 'end' #iBegin
+    | 'if' condition 'then' instruction #iIf
+    | 'while' condition 'do' instruction #iWhile
+    | #iEpsilon
     ;
 
 condition
-    : 'odd' expr
-    | expr OPERATORS expr
+    : 'odd' expr #cOdd
+    | expr COMPARISON expr #cExpr
     ;
 
 expr
-    : ('+'|'-')* term (('+'|'-') term)*
+    : ('+'|'-')* term (('+'|'-') term)* #eOperators
     ;
 
 term
-    : factor (('+'|'-') factor)*
+    : factor (('+'|'-') factor)* #tFactor
     ;
 
 factor
-    : ID
-    | INT
-    | '(' expr ')'
+    : ID #fID
+    | INT #fInt
+    | '(' expr ')' #fExpr
     ;
 
+//Lexer rules
+COMPARISON
+        : '='
+        | '+'
+        | '-'
+        | '*'
+        | '/'
+        | '<'
+        | '<='
+        | '>'
+        | '>='
+        | '<>'
+        ;
+
+ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
+         '\u00C0' .. '\u00FF')*
+    ;
+
+INT :   '0' | ('1'..'9')+('0'..'9')*
+    ;
