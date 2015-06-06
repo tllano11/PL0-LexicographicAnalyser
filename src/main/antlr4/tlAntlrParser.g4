@@ -17,7 +17,7 @@ program
     ;
 
 block
-    : defconst? defvar? (defproc)*instruction #bDefconst
+    : defconst? defvar? (defproc)*instruction #bDefBlock
     ;
 
 defconst
