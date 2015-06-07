@@ -92,8 +92,7 @@ ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
          '\u00C0' .. '\u00FF')*
 {
   if(getText().length() > 32){
-      System.out.print("*** Fail: ");
-       System.out.print(" Line:" + getLine() + " Column:"
+       System.out.println("*** Fail: Line:" + getLine() + " Column:"
        			+ getCharPositionInLine()
 			+ " token recognition error at:'"
 			+ getText() + "' ***"
@@ -107,8 +106,7 @@ INT :   ('0' | ('1'..'9')+('0'..'9')*)
 
 {
   if(valInt(getText())){
-      System.out.print("*** Fail: ");
-       System.out.print(" Line:" + getLine() + " Column:"
+       System.out.println("*** Fail: Line:" + getLine() + " Column:"
        			+ getCharPositionInLine()
 			+ " token recognition error at:'"
 			+ getText() + "' ***"

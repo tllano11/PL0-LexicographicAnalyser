@@ -1,4 +1,4 @@
-var x, squ;
+var x;
  
 procedure square;
 begin
@@ -6,11 +6,11 @@ begin
 end;
  
 begin
-   x := 1;
+   x := 2147483647;
    while x <= 10 do
    begin
       call square;
-      squ;
-      x := x + 1
+      x := 2147483648;
+      x := 2147483649;
    end
 end.
