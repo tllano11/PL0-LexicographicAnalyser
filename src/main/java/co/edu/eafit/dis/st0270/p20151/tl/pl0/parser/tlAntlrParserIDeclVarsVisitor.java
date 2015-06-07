@@ -3,6 +3,8 @@ package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 import java.util.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.parser.tlAntlrParserParser.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @class Visitor used to find the declared variables
@@ -12,16 +14,19 @@ public class tlAntlrParserIDeclVarsVisitor
     extends tlAntlrParserBaseVisitor<Void> {
 
     //Global variable to store the program's rule context
-    tlAntlrParserParser.PBlockContext grandFather;
+    private tlAntlrParserParser.PBlockContext grandFather;
 
     //Name of the current procedure
-    String procName = "";
+    private String procName = "";
     
     //Set of the global variables of the current file
-    HashSet<String> gvars = new HashSet<String>();
+    private HashSet<String> gvars = new HashSet<String>();
 
     //List of variable's sets that exist at a specefic procedure
-    List<HashSet<String>> varsList = new LinkedList<>();
+    private List<HashSet<String>> varsList = new LinkedList<>();
+
+    //RE that have all the ASCCI (Printable) characters
+    private String rex = "\\p{ASCII}";  
     
     /**
      * @method visitor for the program rule
@@ -41,13 +46,13 @@ public class tlAntlrParserIDeclVarsVisitor
      */
     public Void visitBDefBlock (tlAntlrParserParser.BDefBlockContext ctx) {
         //Visit the defvar rule
-        visit(ctx.defvar());
+        if (ctx.defvar() != null) visit(ctx.defvar());
 
         //Visit each procedure in the actual context
         for (DefprocContext proc: ctx.defproc()) visit(proc);
 
         //Visit the instruction rule
-        visit(ctx.instruction());
+        if (ctx.instruction() != null) visit(ctx.instruction());
 
         return null;
     }
@@ -70,14 +75,15 @@ public class tlAntlrParserIDeclVarsVisitor
             
             gvars = vars;
             System.out.println("*** global ***\n"
-                               + "vars: " + gvars.toString() + "."
-                               + "\n\r hidings: [].");
+                               + "vars: " + toPrintable(gvars.toString())
+                               + ".\n\r hidings: [].");
         } else {
             //Else we are in a procedure
 
             //Print the actual variables
             System.out.println("*** "+ procName + " ***");
-            System.out.println("vars: " + vars.toString() + ".");
+            System.out.println("vars: " + toPrintable(vars.toString())
+                               + ".");
 
             //Set to store the hidings
             HashSet<String> hds = new HashSet<String>();
@@ -92,7 +98,8 @@ public class tlAntlrParserIDeclVarsVisitor
             }
 
             //Print the hiding variables
-            System.out.println("hidings: " + hds.toString() + ".");
+            System.out.println("hidings: " + toPrintable(hds.toString())
+                               + ".");
         }
 
         //Add to varsList the actual set of variables
@@ -112,7 +119,7 @@ public class tlAntlrParserIDeclVarsVisitor
         //Visit the block rule
         visit(ctx.block());
 
-        //Remove in varsList the last set of vars
+        //Vars last set is removed from varList
         varsList.remove(varsList.size() - 1);
 
         return null;
@@ -133,5 +140,36 @@ public class tlAntlrParserIDeclVarsVisitor
         }
 
         return null;
+    }
+
+    /**
+     * @method Transform a string into its pritable form
+     * @param lex String to transform
+     */ 
+    public String toPrintable(String lex) {
+        //Initilice the variables used to transform the string
+        Pattern p = Pattern.compile(rex);
+        Matcher m;
+        String printableLex = "";
+        String ch;
+        int ascii;
+
+        //For each character in lix
+        for (char c : lex.toCharArray()) {
+            ch = Character.toString(c);
+            m = p.matcher(ch);
+
+            //Check if the character is printable
+            if (m.matches()) {
+                //If it's printable; it's concatenated to printableLex
+                printableLex += ch;
+            } else {
+                //If not; it's transformed to it's numerical value
+                ascii = (int) c;
+                printableLex += String.valueOf(ascii);
+            }
+        }
+        
+        return printableLex;
     }
 }
