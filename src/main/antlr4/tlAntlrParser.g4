@@ -34,7 +34,7 @@ defvar
     ;
 
 defproc
-    : 'procedure' ID ';' block ';' #dpProcedure
+    : 'procedure' ID ';' block ';' #dpProc
     ;
 
 instruction
@@ -48,15 +48,15 @@ instruction
 
 condition
     : 'odd' expr #cOdd
-    | expr COMPARISON expr #cExpr
+    | expr COMPARISON expr #cComp
     ;
 
 expr
-    : ('+'|'-')? term (('+'|'-') term)* #eOperators
+    : ('+'|'-')? term (('+'|'-') term)* #eExpr
     ;
 
 term
-    : factor (('*'|'/') factor)* #tFactor
+    : factor (('*'|'/') factor)* #tTerm
     ;
 
 factor
