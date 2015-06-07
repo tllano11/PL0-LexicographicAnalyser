@@ -58,11 +58,13 @@ private static void parser (String list[]) {
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
                 tlAntlrParserParser parser = new tlAntlrParserParser(tokens);
                 ParseTree tree = parser.program();
-                tlAntlrParserIDeclVarsVisitor eval = new tlAntlrParserIDeclVarsVisitor();
-               
+                tlAntlrParserIDeclVarsVisitor dec = new tlAntlrParserIDeclVarsVisitor();
+                tlAntlrParserIUsedVarsVisitor use = new tlAntlrParserIUsedVarsVisitor(); 
+                
                 //Eval the program if the parser don't fail
                 System.out.println("*** OK ***");
-                eval.visit(tree);
+                dec.visit(tree);
+		use.visit(tree);
             } catch (FileNotFoundException ex) {
                 System.err.println("*** The File: " + arg + " was not found");
                 continue;

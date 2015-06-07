@@ -18,9 +18,6 @@ public class tlAntlrParserIDeclVarsVisitor
 
     //Name of the current procedure
     private String procName = "";
-    
-    //Set of the global variables of the current file
-    private HashSet<String> gvars = new HashSet<String>();
 
     //List of variable's sets that exist at a specefic procedure
     private List<HashSet<String>> varsList = new LinkedList<>();
@@ -45,14 +42,14 @@ public class tlAntlrParserIDeclVarsVisitor
      * @param context at actual grammar rule
      */
     public Void visitBDefBlock (tlAntlrParserParser.BDefBlockContext ctx) {
-        //Visit the defvar rule
+        //Visit the defvar rule (if exist)
         if (ctx.defvar() != null) visit(ctx.defvar());
 
         //Visit each procedure in the actual context
         for (DefprocContext proc: ctx.defproc()) visit(proc);
 
         //Visit the instruction rule
-        if (ctx.instruction() != null) visit(ctx.instruction());
+        visit(ctx.instruction());
 
         return null;
     }
@@ -73,9 +70,8 @@ public class tlAntlrParserIDeclVarsVisitor
             //If the father of the fathe of the actual context
             //Is the program rule; these are the global variables
             
-            gvars = vars;
             System.out.println("*** global ***\n"
-                               + "vars: " + toPrintable(gvars.toString())
+                               + "vars: " + toPrintable(vars.toString())
                                + ".\n\r hidings: [].");
         } else {
             //Else we are in a procedure
