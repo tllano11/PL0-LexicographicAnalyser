@@ -3,11 +3,11 @@
 clear
 FLAGA="$CLASSPATH:../target/classes co.MaintlAntlrLexer"
 FLAGJ="$CLASSPATH:../target/classes co.MaintlJFlexLexer"
-
+FLAGP="$CLASSPATH:../target/classes co.MaintlAntlrParser"
 
 PS3='Enter your choice: '
 options=("Run Antlr tests" "Run Antlr S.I." "Run Antlr misc" "Run Antlr N.A." "Run JFlex tests"
-	 "Run JFlex S.I." "Run JFlex misc" "Run JFlex N.A." "Quit")
+	 "Run JFlex S.I." "Run JFlex misc" "Run JFlex N.A." "Run Antlr Parser" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -34,6 +34,9 @@ do
             ;;
 	"Run JFlex N.A.")
 	    java -cp $FLAGJ
+	    ;;
+	"Run Antlr Parser")
+	    java -cp $FLAGP test04
 	    ;;
         "Quit")
             break
