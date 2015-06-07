@@ -15,11 +15,6 @@ grammar tlAntlrParser;
 @lexer::header{
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 }
-
-@parser::rulecatch {
-   catch (RecognitionException e) {
-      throw e;
-   }
 //options { tokenVocab=tlAntlrLexer; }
 
 program 
@@ -27,11 +22,11 @@ program
     ;
 
 block
-    : defconst? defvar? (defproc)*instruction #bDefBlock
+    : defconst? defvar? (defproc)* instruction #bDefBlock
     ;
 
 defconst
-    : 'const' ID ':' INT (',' ID ':' INT)* ';' #dcConst
+    : 'const' ID '=' INT (',' ID '=' INT)* ';' #dcConst
     ;
 
 defvar
@@ -43,9 +38,9 @@ defproc
     ;
 
 instruction
-    : ID ":=" expr #iID
+    : ID ':=' expr #iID
     | 'call' ID #iCall
-    | 'begin' instruction (';' instruction)* ';'? 'end' #iBegin
+    | 'begin' instruction (';' instruction)* 'end' #iBegin
     | 'if' condition 'then' instruction #iIf
     | 'while' condition 'do' instruction #iWhile
     | #iEpsilon
@@ -57,11 +52,11 @@ condition
     ;
 
 expr
-    : ('+'|'-')* term (('+'|'-') term)* #eOperators
+    : ('+'|'-')? term (('+'|'-') term)* #eOperators
     ;
 
 term
-    : factor (('+'|'-') factor)* #tFactor
+    : factor (('*'|'/') factor)* #tFactor
     ;
 
 factor
@@ -78,10 +73,10 @@ COMPARISON
         | '*'
         | '/'
         | '<'
-        | "<="
+        | '<='
         | '>'
-        | ">="
-        | "<>"
+        | '>='
+        | '<>'
         ;
 
 ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|

@@ -1,16 +1,18 @@
-const zero = 0; one = 1; 
+const zero = 0, one = 1; 
 var a , b, c ;
 
 procedure fail; 
 
 var x , y , z ; 
 
-begin x := 20; y := 40;
-while x > 0 do 
-   begin if odd x then 
-   y := y − 2; 
-   x := x − 1;
-end;
+begin 
+x := 20; 
+y := 40;
+   while x > 0 do 
+   	begin if odd x then 
+   	y := y - 2; 
+   	x := x - 1;
+   end;
 
 begin 
    call fail;

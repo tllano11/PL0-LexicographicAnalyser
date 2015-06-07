@@ -56,8 +56,8 @@ private static void parser (String list[]) {
                 ANTLRInputStream afs = new ANTLRInputStream(r);
                 tlAntlrParserLexer lexer = new tlAntlrParserLexer(afs);
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
-	        tlAntlrParserParser parser = new tlAntlrParserParser(tokens);
-		ParseTree tree = parser.program();
+                tlAntlrParserParser parser = new tlAntlrParserParser(tokens);
+                ParseTree tree = parser.program();
                 tlAntlrParserIDeclVarsVisitor eval = new tlAntlrParserIDeclVarsVisitor();
                
                 //Eval the program
@@ -65,12 +65,6 @@ private static void parser (String list[]) {
             } catch (FileNotFoundException ex) {
                 System.err.println("*** The File: " + arg + " was not found");
                 continue;
-	    } catch (RecognitionException ex) {
-		System.err.println("*** Fail: ");
-		continue;
-           // } catch (TokenException tok) {
-           //     System.err.println(tok.getMessage());
-           //     continue;
             } catch (IOException ioex) {
                 System.err.println("Unexpected error: " + ioex.getMessage());
                 System.exit(1);
