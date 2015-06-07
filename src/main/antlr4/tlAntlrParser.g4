@@ -15,6 +15,11 @@ grammar tlAntlrParser;
 @lexer::header{
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 }
+
+@parser::rulecatch {
+   catch (RecognitionException e) {
+      throw e;
+   }
 //options { tokenVocab=tlAntlrLexer; }
 
 program 
@@ -38,7 +43,7 @@ defproc
     ;
 
 instruction
-    : ID ':=' expr #iID
+    : ID ":=" expr #iID
     | 'call' ID #iCall
     | 'begin' instruction (';' instruction)* ';'? 'end' #iBegin
     | 'if' condition 'then' instruction #iIf
@@ -73,10 +78,10 @@ COMPARISON
         | '*'
         | '/'
         | '<'
-        | '<='
+        | "<="
         | '>'
-        | '>='
-        | '<>'
+        | ">="
+        | "<>"
         ;
 
 ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
@@ -84,4 +89,8 @@ ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
     ;
 
 INT :   '0' | ('1'..'9')+('0'..'9')*
+    ;
+
+WHITESPACE
+    :   (' ' | '\t' | '\r' | '\n' | '\f') -> skip
     ;
