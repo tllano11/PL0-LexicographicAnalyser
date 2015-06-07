@@ -1,6 +1,7 @@
 package co;
 
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.parser.*;
 import java.io.*;
 import java.nio.charset.Charset;
@@ -50,11 +51,17 @@ private static void parser (String list[]) {
                     }
                 }
 
+                //Initialization of the class used for the parser
                 Reader r = new InputStreamReader(is, "utf-8");
                 ANTLRInputStream afs = new ANTLRInputStream(r);
                 tlAntlrParserLexer lexer = new tlAntlrParserLexer(afs);
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        tlAntlrParserParser parser = new tlAntlrParserParser(tokens);
+		ParseTree tree = parser.program();
+                tlAntlrParserIDeclVarsVisitor eval = new tlAntlrParserIDeclVarsVisitor();
+               
+                //Eval the program
+                eval.visit(tree);
             } catch (FileNotFoundException ex) {
                 System.err.println("*** The File: " + arg + " was not found");
                 continue;
@@ -71,6 +78,9 @@ private static void parser (String list[]) {
         }
     }
     
+    /**
+     * @method main, all the code logic run here
+     */
     public static void main (String args[]) {
         if (args.length == 0) {
             String tmp [] = {"-"};

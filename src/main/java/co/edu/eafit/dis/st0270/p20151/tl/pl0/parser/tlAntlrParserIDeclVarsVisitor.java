@@ -6,7 +6,7 @@ import java.util.HashSet;
  *        For a parser of the PL0 programming language
  */
 
-class tlAntlrParserIDeclVarsVisitor extends tlAntlrParserBaseVisitor {
+public class tlAntlrParserIDeclVarsVisitor extends tlAntlrParserBaseVisitor {
 
     /**
      * @method visitor for the program
