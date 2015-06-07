@@ -6,8 +6,13 @@
  */
 grammar tlAntlrParser;
 
-//Package to which java class (tlAntlrParser.java) belongs
+//Package to which java class (tlAntlrParserParser.java) belongs
 @parser::header{
+  package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
+}
+
+//Package to which java class (tlAntlrParserLexer.java) belongs
+@lexer::header{
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 }
 //options { tokenVocab=tlAntlrLexer; }
