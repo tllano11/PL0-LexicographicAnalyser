@@ -60,7 +60,8 @@ private static void parser (String list[]) {
                 ParseTree tree = parser.program();
                 tlAntlrParserIDeclVarsVisitor eval = new tlAntlrParserIDeclVarsVisitor();
                
-                //Eval the program
+                //Eval the program if the parser don't fail
+                System.out.println("*** OK ***");
                 eval.visit(tree);
             } catch (FileNotFoundException ex) {
                 System.err.println("*** The File: " + arg + " was not found");
