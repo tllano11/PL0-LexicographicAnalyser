@@ -7,7 +7,10 @@ FLAGP="$CLASSPATH:../target/classes co.MaintlAntlrParser"
 
 PS3='Enter your choice: '
 options=("Run Antlr tests" "Run Antlr S.I." "Run Antlr misc" "Run Antlr N.A." "Run JFlex tests"
-	 "Run JFlex S.I." "Run JFlex misc" "Run JFlex N.A." "Run Antlr Parser N.E." "Run Antlr Parser Fail" "Quit")
+	 "Run JFlex S.I." "Run JFlex misc" "Run JFlex N.A." 
+	 "Run Antlr Parser N.E." "Run Antlr Parser Fail" "Run Antlr Parser All"
+         "Quit")
+
 select opt in "${options[@]}"
 do
     case $opt in
@@ -40,6 +43,9 @@ do
 	    ;;
 	"Run Antlr Parser Fail")
 	    java -cp $FLAGP test04
+	    ;;
+	"Run Antlr Parser All")
+	    java -cp $FLAGP test01 test02 test04 test05
 	    ;;
         "Quit")
             break

@@ -16,16 +16,48 @@ grammar tlAntlrParser;
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 }
 
-//User-defined methods
-@lexer::members{
-    public boolean valInt(String s){
-        if(Long.parseLong(s) > 2147483647L){
-	    return true;
-	}
-	return false;
+//User defined functions (Lexer)
+@lexer::members {
+  /**
+   * @method Check if the integer is lower than 2^31
+   *         If not, throw a RuntimeException
+   */
+  public void evalInt (String num) throws RuntimeException {
+    if (Long.parseLong(num) > 2147483647L) {
+      throw new RuntimeException("Line:" + getLine() + " Column:"
+       			         + getCharPositionInLine()
+			         + " Integer is greater than 2^31 at: '"
+			         + getText() + "'");
     }
+  }
+
+  /**
+   * @method Check if the id's length is lower than 31 characters
+   *         If not, throw a RuntimeException
+   */
+  public void evalId (String id) throws RuntimeException {
+    if(id.length() > 32){
+      throw new RuntimeException("Line:" + getLine() + " Column:"
+       			         + getCharPositionInLine()
+			         + " id's length is greater than 32 at: '"
+			         + getText() + "'");
+    }
+  }
 }
 
+//Add exception condition
+@lexer::rulecatch {
+   catch (RecognitionException e) {
+      throw e;
+   }
+}
+
+//Add Options
+options {
+  defaultErrorHandler=false;
+}
+
+//Parser Grammar
 program 
     : block '.' #pBlock
     ;
@@ -91,28 +123,14 @@ COMPARISON
 ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
          '\u00C0' .. '\u00FF')*
 {
-  if(getText().length() > 32){
-       System.out.println("*** Fail: Line:" + getLine() + " Column:"
-       			+ getCharPositionInLine()
-			+ " token recognition error at:'"
-			+ getText() + "' ***"
-		       );
-     System.exit(0);
-  }
+  evalId(getText());
 }
 ;
 
 INT :   ('0' | ('1'..'9')+('0'..'9')*)
 
 {
-  if(valInt(getText())){
-       System.out.println("*** Fail: Line:" + getLine() + " Column:"
-       			+ getCharPositionInLine()
-			+ " token recognition error at:'"
-			+ getText() + "' ***"
-		       );
-     System.exit(0);
-  }
+  evalInt(getText()); 
 }
 ;
 

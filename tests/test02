@@ -3,7 +3,7 @@ const
   n = 85;
  
 var
-  x, y, z, q, r, variábl3_c0ñ_valores_ÑO_Ímp;
+  x, y, z, q, r, variábl3_c0ñ_valores_ÑO_Ímp, variable_con_más_de_32_caracteres_para_ver_si_el_lexer_falla;
  
 procedure multiply;
 var a, b;
