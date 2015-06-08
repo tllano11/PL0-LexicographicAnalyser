@@ -11,161 +11,163 @@ import java.util.regex.Matcher;
  *        For a parser of the PL0 programming language
  */
 public class tlAntlrParserIDeclVarsVisitor
-    extends tlAntlrParserBaseVisitor<Void> {
+  extends tlAntlrParserBaseVisitor<Void> {
 
-    //Global variable to store the program's rule context
-    private tlAntlrParserParser.PBlockContext grandFather;
+  //Global variable to store the program's rule context
+  private tlAntlrParserParser.PBlockContext grandFather;
 
-    //Name of the current procedure
-    private String procName = "";
+  //Name of the current procedure
+  private String procName = "";
 
-    //List of variable's sets that exist at a specefic procedure
-    private List<HashSet<String>> varsList = new LinkedList<>();
+  //List of variable's sets that exist at a specefic procedure
+  private List<HashSet<String>> varsList = new LinkedList<>();
 
-    //RE that have all the ASCCI (Printable) characters
-    private String rex = "\\p{ASCII}";  
-    
-    /**
-     * @method visitor for the program rule
-     * @param context at actual grammar rule
-     */
-    public Void visitPBlock (tlAntlrParserParser.PBlockContext ctx) {
-        System.out.println("*** Decl Vars ***");
-        grandFather = ctx; //Save the program's context
-        visit(ctx.block()); //Visit the block rule
+  //RE that have all the ASCCI (Printable) characters
+  private String rex = "\\p{ASCII}";
 
-        return null;
-    }
+  /**
+   * @method visitor for the program rule
+   * @param context at actual grammar rule
+   */
+  public Void visitPBlock (tlAntlrParserParser.PBlockContext ctx) {
+    System.out.println("*** Decl Vars ***");
 
-    /**
-     * @method visitor for the block rule
-     * @param context at actual grammar rule
-     */
-    public Void visitBDefBlock (tlAntlrParserParser.BDefBlockContext ctx) {
-        //Visit the defvar rule (if exist)
-        if (ctx.defvar() != null) visit(ctx.defvar());
+    //Save the program's context
+    grandFather = ctx;
 
-        //Visit each procedure in the actual context
-        for (DefprocContext proc: ctx.defproc()) visit(proc);
+    //Visit the block rule
+    visit(ctx.block());
 
-        //Visit the instruction rule
-        visit(ctx.instruction());
+    return null;
+  }
 
-        return null;
-    }
+  /**
+   * @method visitor for the block rule
+   * @param context at actual grammar rule
+   */
+  public Void visitBDefBlock (tlAntlrParserParser.BDefBlockContext ctx) {
+    //Visit the defvar rule (if exist)
+    if (ctx.defvar() != null) visit(ctx.defvar());
 
-    /**
-     * @method visitor for the defvar rule
-     * @param context at actual grammar rule
-     */
-    public Void visitDvVar (tlAntlrParserParser.DvVarContext ctx) {
-        //Set of variabless at this context
-        HashSet<String> vars = new HashSet<String>();
+    //Visit each procedure in the actual context
+    for (DefprocContext proc: ctx.defproc()) visit(proc);
 
-        //Add to vars each variable in the context
-        for (TerminalNode node : ctx.ID()) vars.add(node.getText());
+    //Visit the instruction rule
+    visit(ctx.instruction());
 
-        //Print the variables
-        if (ctx.getParent().getParent().equals(grandFather)) {
-            //If the father of the fathe of the actual context
-            //Is the program rule; these are the global variables
-            
-            System.out.println("*** global ***\n"
-                               + "vars: " + toPrintable(vars.toString())
-                               + ".\n\r hidings: [].");
-        } else {
-            //Else we are in a procedure
+    return null;
+  }
 
-            //Print the actual variables
-            System.out.println("*** "+ procName + " ***");
-            System.out.println("vars: " + toPrintable(vars.toString())
-                               + ".");
+  /**
+   * @method visitor for the defvar rule
+   * @param context at actual grammar rule
+   */
+  public Void visitDvVar (tlAntlrParserParser.DvVarContext ctx) {
+    //Set of variabless at this context
+    HashSet<String> vars = new HashSet<String>();
 
-            //Set to store the hidings
-            HashSet<String> hds = new HashSet<String>();
+    //Add to vars each variable in the context
+    for (TerminalNode node : ctx.ID()) vars.add(node.getText());
 
-            //For each set of variables of before procedures
-            for (HashSet<String>  set : varsList) {
-                //And for each var in the actual procedure
-                for (String var : vars) {
-                    //If the var was defined before, is hiding
-                    if (set.contains(var)) hds.add(var);
-                }
-            }
+    //Print the variables
+    if (ctx.getParent().getParent().equals(grandFather)) {
+      //If the father of the fathe of the actual context
+      //Is the program rule; these are the global variables
 
-            //Print the hiding variables
-            System.out.println("hidings: " + toPrintable(hds.toString())
-                               + ".");
+      System.out.println("*** global ***\nvars: "
+                         + toPrintable(vars.toString())
+                         + ".\n\rhidings: [].");
+    } else {
+      //Else we are in a procedure
+
+      //Print the actual variables
+      System.out.println("*** "+ procName + " ***\n\rvars: "
+                         + toPrintable(vars.toString()) + ".");
+
+      //Set to store the hidings
+      HashSet<String> hds = new HashSet<String>();
+
+      //For each set of variables of before procedures
+      for (HashSet<String>  set : varsList) {
+        //And for each var in the actual procedure
+        for (String var : vars) {
+          //If the var was defined before, is hiding
+          if (set.contains(var)) hds.add(var);
         }
+      }
 
-        //Add to varsList the actual set of variables
-        varsList.add(vars);
-
-        return null;
+      //Print the hiding variables
+      System.out.println("hidings: " + toPrintable(hds.toString()) + ".");
     }
 
-    /**
-     * @method visitor for the defproc rule
-     * @param context at actual grammar rule
-     */
-    public Void visitDpProc (tlAntlrParserParser.DpProcContext ctx) {
-        //The name of the current procedure
-        procName = ctx.ID().getText();
+    //Add to varsList the actual set of variables
+    varsList.add(vars);
 
-        //Visit the block rule
-        visit(ctx.block());
+    return null;
+  }
 
-        //Vars last set is removed from varList
-        varsList.remove(varsList.size() - 1);
+  /**
+   * @method visitor for the defproc rule
+   * @param context at actual grammar rule
+   */
+  public Void visitDpProc (tlAntlrParserParser.DpProcContext ctx) {
+    //The name of the current procedure
+    procName = ctx.ID().getText();
 
-        return null;
+    //Visit the block rule
+    visit(ctx.block());
+
+    //Vars last set is removed from varList
+    varsList.remove(varsList.size() - 1);
+
+    return null;
+  }
+
+  /**
+   * @method visitor for the instruction rule (iBegin)
+   * @param context at actual grammar rules
+   */
+  public Void visitIBegin (tlAntlrParserParser.IBeginContext ctx) {
+    if (ctx.getParent().getParent().equals(grandFather)) {
+      //If the father of the fathe of the actual context
+      //Is the program rule; we are in the Main
+
+      System.out.println("*** main ***");
+      System.out.println("vars: [].");
+      System.out.println("hidings: [].");
     }
 
-    /**
-     * @method visitor for the instruction rule (iBegin)
-     * @param context at actual grammar rules
-     */
-    public Void visitIBegin (tlAntlrParserParser.IBeginContext ctx) {
-        if (ctx.getParent().getParent().equals(grandFather)) {
-            //If the father of the fathe of the actual context
-            //Is the program rule; we are in the Main
-            
-            System.out.println("*** main ***");
-            System.out.println("vars: [].");
-            System.out.println("hidings: [].");
-        }
+    return null;
+  }
 
-        return null;
+  /**
+   * @method Transform a string into its pritable form
+   * @param lex String to transform
+   */
+  public String toPrintable(String lex) {
+    //Initilice the variables used to transform the string
+    Pattern p = Pattern.compile(rex);
+    Matcher m;
+    String printableLex = "";
+    String ch;
+    int ascii;
+
+    //For each character in lix
+    for (char c : lex.toCharArray()) {
+      ch = Character.toString(c);
+      m = p.matcher(ch);
+
+      //Check if the character is printable
+      if (m.matches()) {
+        //If it's printable; it's concatenated to printableLex
+        printableLex += ch;
+      } else {
+        //If not; it's transformed to it's numerical value
+        ascii = (int) c;
+        printableLex += String.valueOf(ascii);
+      }
     }
 
-    /**
-     * @method Transform a string into its pritable form
-     * @param lex String to transform
-     */ 
-    public String toPrintable(String lex) {
-        //Initilice the variables used to transform the string
-        Pattern p = Pattern.compile(rex);
-        Matcher m;
-        String printableLex = "";
-        String ch;
-        int ascii;
-
-        //For each character in lix
-        for (char c : lex.toCharArray()) {
-            ch = Character.toString(c);
-            m = p.matcher(ch);
-
-            //Check if the character is printable
-            if (m.matches()) {
-                //If it's printable; it's concatenated to printableLex
-                printableLex += ch;
-            } else {
-                //If not; it's transformed to it's numerical value
-                ascii = (int) c;
-                printableLex += String.valueOf(ascii);
-            }
-        }
-        
-        return printableLex;
-    }
+    return printableLex;
+  }
 }

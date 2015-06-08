@@ -2,7 +2,7 @@ const m = 1, n = 200;
 var a, b, c, d, e;
 
 procedure proc1;
- var a, b, c, f, g, i, j;
+ var a, b, c, f, g, i, j, vár_cóÑ_Caracter3_unicode;
  
  begin 
   a := e;
