@@ -19,11 +19,14 @@ public class tlAntlrParserIUsedVarsVisitor
     //Name of the current procedure
     private String procName = "";
 
+    //List of const's sets that exist at a specific procedure
+    private List<HashSet<String>> constsList = new LinkedList<>();
+    
     //List of variable's sets that exist at a specefic procedure
     private List<HashSet<String>> varsList = new LinkedList<>();
 
-    //List of const's sets that exist at a specific procedure
-    private List<HashSet<String>> constsList = new LinkedList<>();
+    //Set of the used Variables at a specific procedure
+    private HashSet<String> usedVars = new HashSet<>();
 
     //RE that have all the ASCCI (Printable) characters
     private String rex = "\\p{ASCII}";  
@@ -34,9 +37,16 @@ public class tlAntlrParserIUsedVarsVisitor
      */
     public Void  visitPBlock (tlAntlrParserParser.PBlockContext ctx) {
         System.out.println("*** Used Vars ***");
-        grandFather = ctx; //Save the program's context
-        visit(ctx.block()); //Visit the block rule
 
+        //Save the program's context
+        grandFather = ctx;
+
+        //Visit the block rule
+        visit(ctx.block());
+
+        //print the usedVariables from main
+        printVars();
+        
         return null;
     }
 
@@ -47,13 +57,13 @@ public class tlAntlrParserIUsedVarsVisitor
     public Void visitBDefBlock (tlAntlrParserParser.BDefBlockContext ctx) {
         //Visit the defconst rule (if exist)
         if (ctx.defconst() != null) visit(ctx.defconst());
-	//If not, an empty set is added to the constsList
-	else constsList.add(new HashSet<String>());
+        //If not, an empty set is added to the constsList
+        else constsList.add(new HashSet<String>());
         
         //Visit the defvar rule (if exist)
         if (ctx.defvar() != null) visit(ctx.defvar());
-	//If not, an empty set is added to the varsList
-	else varsList.add(new HashSet<String>());
+        //If not, an empty set is added to the varsList
+        else varsList.add(new HashSet<String>());
 
         //Visit each procedure in the actual context
         for (DefprocContext proc: ctx.defproc()) visit(proc);
@@ -113,7 +123,9 @@ public class tlAntlrParserIUsedVarsVisitor
 
         //Consts last set is removed from constsList
         constsList.remove(constsList.size() - 1);
-        
+
+        //Print the used variables in the current context
+        printVars();
         return null;
     }
 
@@ -122,6 +134,12 @@ public class tlAntlrParserIUsedVarsVisitor
      * @param context at actual grammar rule
      */
     public Void visitIID (tlAntlrParserParser.IIDContext ctx) {
+        //Add this ID to the usedVars
+        addVar(ctx.ID().getText());
+
+        //Visit the expr rule
+        visit(ctx.expr());
+        
         return null;
     }
 
@@ -224,6 +242,9 @@ public class tlAntlrParserIUsedVarsVisitor
      * @param context at actual grammar rule
      */
     public Void visitFID (tlAntlrParserParser.FIDContext ctx) {
+        //Add this ID to the usedVars
+        addVar(ctx.ID().getText());
+            
         return null;
     }
 
@@ -267,6 +288,61 @@ public class tlAntlrParserIUsedVarsVisitor
         }
         
         return printableLex;
+    }
+
+    /**
+     * @method check if the var is valid and adds it to usedVars
+     * @param var name of the var to add
+     */
+    public void addVar (String id) {
+        //Switch for stop this function
+        boolean swt = false;
+        
+        //It's used to know if id is a constant
+        boolean isconst = false; 
+        
+        for (int i = varsList.size() - 1; i >= 0 && !swt; i--) {
+            //For each nesting level
+            
+            if (varsList.get(i).contains(id)) {
+                //If id was defined as variable
+                //In the current nesting level
+                //Look if id isn't defined as const
+                
+                for (int j = i; j < constsList.size() && !isconst; j++) {
+                    //For each following nesting level
+
+                    if (constsList.get(j).contains(id)) {
+                        //If id is defined as a const
+
+                        //End funtion
+                        isconst = true;
+                        swt = true;
+                    }
+                }
+
+                if (!isconst) {
+                    //If id isn't defined as a const
+                    //Add to the usedVars set
+                    usedVars.add(id);
+
+                    //End funtion
+                    swt = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * @method print the usedVars
+     */
+    public void printVars () {
+        //Print
+        System.out.println("*** " + procName + " ***\n\rusedVars: "
+                           + toPrintable(usedVars.toString()) + ".");
+
+        //Clear the usedVars Set
+        usedVars.clear();
     }
 }
 
