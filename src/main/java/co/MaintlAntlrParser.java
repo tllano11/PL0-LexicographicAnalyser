@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import co.edu.eafit.dis.st0270.p20151.tl.pl0.parser.*;
+import co.edu.eafit.dis.st0270.p20151.tl.pl0.generic.ParserErrorListener;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -33,16 +34,16 @@ public class MaintlAntlrParser {
      */
     private static void parser (String list[]) {
 
-	//Declaration of attributes used for the parsing process
-	InputStream is = null;
-	Reader r = null;
-	ANTLRInputStream afs = null;
-	tlAntlrParserLexer lexer = null;
-	CommonTokenStream tokens = null;
-	tlAntlrParserParser parser = null;
-	ParseTree tree = null;
-	tlAntlrParserIDeclVarsVisitor dec = null;
-	tlAntlrParserIUsedVarsVisitor use = null;
+        //Declaration of attributes used for the parsing process
+        InputStream is = null;
+        Reader r = null;
+        ANTLRInputStream afs = null;
+        tlAntlrParserLexer lexer = null;
+        CommonTokenStream tokens = null;
+        tlAntlrParserParser parser = null;
+        ParseTree tree = null;
+        tlAntlrParserIDeclVarsVisitor dec = null;
+        tlAntlrParserIUsedVarsVisitor use = null;
 
         for (String arg : list) {
             try {
@@ -63,31 +64,39 @@ public class MaintlAntlrParser {
                 }
 
                 //Initialization of attributes used for the parsing process
-		r = new InputStreamReader(is, "utf-8");
-		afs = new ANTLRInputStream(r);
-		lexer = new tlAntlrParserLexer(afs);
-		tokens = new CommonTokenStream(lexer);
-		parser = new tlAntlrParserParser(tokens);
-		tree = parser.program();
-		dec = new tlAntlrParserIDeclVarsVisitor();
-                use = new tlAntlrParserIUsedVarsVisitor();
+                //Lexer Actions
+                r = new InputStreamReader(is, "utf-8");
+                afs = new ANTLRInputStream(r);
+                lexer = new tlAntlrParserLexer(afs);
+                lexer.removeErrorListeners();
+                lexer.addErrorListener(ParserErrorListener.INSTANCE);
+
+
+                //Parser Actions
+                tokens = new CommonTokenStream(lexer);
+                parser = new tlAntlrParserParser(tokens);
+                parser.removeErrorListeners();
+                parser.addErrorListener(ParserErrorListener.INSTANCE);
+                tree = parser.program();
 
                 //Eval the program if the parser don't fail
+                dec = new tlAntlrParserIDeclVarsVisitor();
+                use = new tlAntlrParserIUsedVarsVisitor();
                 System.out.println("*** OK ***");
                 dec.visit(tree);
-		use.visit(tree);
+                use.visit(tree);
             } catch (FileNotFoundException ex) {
                 System.err.println("*** Fail: The File: " + arg
-				   + " was not found ***");
+                                   + " was not found ***");
                 continue;
             } catch (IOException ioex) {
                 System.err.println("*** Fail: Unexpected error: " +
-				   ioex.getMessage() + " ***");
+                                   ioex.getMessage() + " ***");
                 System.exit(1);
             } catch (ParseCancellationException pce){
-		System.err.println(pce.getMessage());
-		System.exit(1);
-	    }
+                System.err.println(pce.getMessage());
+                System.exit(1);
+            }
         }
     }
 
