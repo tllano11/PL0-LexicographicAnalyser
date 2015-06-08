@@ -13,8 +13,8 @@ procedure proc1;
   while a < b do 
    if f < g then f := f + a;
    a := a + 1;
-  end
-end;
+ end;
+
 
 procedure proc2;
  var t, v, w, x, y, z;
@@ -25,8 +25,7 @@ procedure proc2;
   while y < z do 
    if y < w then x := x + y;
    y := y + 2; 
-  end 
- end;
+ end; 
 
 begin
   e := m;
