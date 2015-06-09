@@ -14,11 +14,15 @@
   <proyecto>
     <java>
       <mainclases>
+        <!-- LEXER -->
         <mainclass srcdir="src/main/java" package="co" clase="tlMainAntlrLexer.java">
         </mainclass>
         <mainclass srcdir="src/main/java" package="co" clase="tlMainJFlexLexer.java">
         </mainclass>
-      </mainclases>
-    </java>
-  </proyecto>
-</grupo>
+        <!-- PARSER -->
+        <mainclass srcdir="src/main/java" package="co" clase="tlMainAntlrParser.java">
+          <\mainclass>
+        </mainclases>
+      </java>
+    </proyecto>
+  </grupo>

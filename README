@@ -1,15 +1,19 @@
 Grupo de trabajo:
 Tomás Felipe LLano Ríos (201410019010)
 Luis Miguel Mejía Suárez (201410033010)
+Version: 2.5.0 (08/06/15
 
 Este proyecto busca crear un analizador lexicografico
-para el lenguaje pl0, escrito en java 1.8; haciendo
-uso de las bibliotecas de java, Antlr4 y JFlex.
+y un parser para el lenguaje pl0, escrito en java 1.8;
+haciendo uso de las bibliotecas de java, Antlr4 y JFlex.
 
-Para el uso del programa se debe llamar a las clases 
-principales "MaintlAntlerLexer" o "MaintlFLexLexer"
-Puesto que ambas reciben las mismas entradas y generan 
-la misma salida.
+Para el uso del programa se debe llamar a las clases principales 
+"MaintlAntlrLexer" o "MaintlFLexLexer" para realizar el proceso del lexer
+el cual imprime la información de cada token del archivo
+Puesto que ambas reciben las mismas entradas y generan la misma salida
+O "MaintlAntlrParser" para realizar un proceso de parser
+el cual imprime ña información de la variables delcaradas y usadas en el archivo 
+
 Los argumentos pasados al programa son los nombres
 de los archivos a analizar, o un guion "-" para entrar
 al modo entrada estandar.
