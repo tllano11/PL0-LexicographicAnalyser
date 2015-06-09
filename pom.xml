@@ -11,12 +11,14 @@
   <name>pl0compiler</name>
   <url>http://maven.apache.org</url>
 
+  <!-- General properties. They will be applied to all included files -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <antlr4.visitor>true</antlr4.visitor>
     <antlr4.listener>true</antlr4.listener>
   </properties>
 
+  <!-- Plugins required to build project  -->
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -32,8 +34,11 @@
     </dependency>
   </dependencies>
 
+  <!-- All actions concerning each plugin are defined below <plugin> tag -->
   <build>
     <plugins>
+
+      <!-- JFlex plugin -->
       <plugin>
         <groupId>de.jflex</groupId>
         <artifactId>jflex-maven-plugin</artifactId>
@@ -50,10 +55,19 @@
         </executions>
       </plugin>
 
+      <!-- Antlr plugin -->
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
         <version>4.5</version>
+
+	<!-- Each execution tells maven which action needs to be executed.
+	     In this case, maven is told to build all antlr files contained
+	     in "src/main/antlr4", excluding "tlAntlrParser.g4".
+	     - Remark: Everything contained in the source directory will be
+	       built except for those files surrounded by the "<exclude>" tag.
+	     - Remark: Each execution must have a unique id (<id>).
+	-->
         <executions>
           <execution>
             <id>antlrLexer</id>
@@ -100,12 +114,13 @@
               <verbose>true</verbose>
               <excludes>
 		 <exclude>tlAntlrLexer.g4</exclude>
-	      </excludes>	      
+	      </excludes>
             </configuration>
           </execution>
         </executions>
       </plugin>
 
+       <!-- Maven compiler plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -115,11 +130,17 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-      
+
+       <!-- Maven cleaner plugin -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.6.1</version>
         <configuration>
+
+	  <!-- Each fileset (<fileset>) contains information about which file/s or/and
+	       directory/ies are going to be deleted at the time of calling "mvn clean"
+	       instruction.
+	  -->
           <filesets>
             <fileset>
               <directory>src/main/java/co/edu/eafit/dis/st0270/p20151/tl/pl0/lexer/ </directory>
