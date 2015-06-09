@@ -22,7 +22,7 @@ public class VerboseListener extends BaseErrorListener {
   }
 
   /**
-   * @method get the printable unknow char
+   * @method get the printable unknown char
    */
   private  String getUnknownChar (String msg) {
     int ascii;

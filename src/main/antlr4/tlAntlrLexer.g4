@@ -1,14 +1,18 @@
 lexer grammar tlAntlrLexer;
 
+//Package to which java class (tlAntlrLexer.java) belongs.
 @lexer::header{
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.lexer;
 }
 
+//Add exception condition
 @lexer::rulecatch {
    catch (RecognitionException e) {
       throw e;
    }
 }
+
+//Lexer rules.
 
 SEPARATORS
         : '('

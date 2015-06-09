@@ -1,12 +1,12 @@
 /*
- * "grammar" specifies that tlAntlrParser.g4 is a "combined grammar" file, 
+ * "grammar" specifies that tlAntlrParser.g4 is a "combined grammar" file,
  * which means it accepts "parser grammar" and "lexer grammar" syntax.
- * Remark: Lexer rules start with a capital letter and parser rules start 
- * with a lowercase letter. 
+ * Remark: Lexer rules' first letter is a capital letter and parser rules'
+ * first letter is a lowercase letter.
  */
 grammar tlAntlrParser;
 
-//Package to which java class (tlAntlrParserParser.java) belongs
+//Package to which java class (tlAntlrParserParser.java) belongs.
 @parser::header{
   package co.edu.eafit.dis.st0270.p20151.tl.pl0.parser;
 }
@@ -18,9 +18,14 @@ grammar tlAntlrParser;
 
 //User defined functions (Lexer)
 @lexer::members {
+
   /**
-   * @method Check if the integer is lower than 2^31
-   *         If not, throw a RuntimeException
+   * Checks if the integer is greater than 2^31.
+   * If not, it throws a RuntimeException.
+   * - Remark: When throwing an exception at parsing time,
+   *   it must be RuntimeException or those provided by
+   *   antlr.
+   * - Remark: Antlr exceptions extends RuntimeException.
    */
   public void evalInt (String num) throws RuntimeException {
     if (Long.parseLong(num) > 2147483647L) {
@@ -32,8 +37,8 @@ grammar tlAntlrParser;
   }
 
   /**
-   * @method Check if the id's length is lower than 31 characters
-   *         If not, throw a RuntimeException
+   * Checks if the id's length is greater than 32 characters.
+   * If not, it throws a RuntimeException.
    */
   public void evalId (String id) throws RuntimeException {
     if(id.length() > 32){
@@ -45,7 +50,7 @@ grammar tlAntlrParser;
   }
 }
 
-//Add exception condition
+//Adds exception condition
 @lexer::rulecatch {
    catch (RecognitionException e) {
       throw e;
@@ -58,7 +63,12 @@ options {
 }
 
 //Parser Grammar
-program 
+/*
+ * Parser grammar.
+ *  -Remark: "#..." labels define visitors rules.
+ *  -Remark: {...} -> stands for an "action".
+ */
+program
     : block '.' #pBlock
     ;
 
@@ -130,7 +140,7 @@ ID  :   ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|
 INT :   ('0' | ('1'..'9')+('0'..'9')*)
 
 {
-  evalInt(getText()); 
+  evalInt(getText());
 }
 ;
 

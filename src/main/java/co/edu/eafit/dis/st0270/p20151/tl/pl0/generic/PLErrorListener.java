@@ -3,8 +3,8 @@ package co.edu.eafit.dis.st0270.p20151.tl.pl0.generic;
 import org.antlr.v4.runtime.*;
 
 /**
- * @class Use to detect the lexer and parser errors
- *        And throw a new RuntimeException
+ * @class Used to throw a new RuntimeException when lexer and parser errors
+ *        are detected.
  */
 public class PLErrorListener extends BaseErrorListener {
 
